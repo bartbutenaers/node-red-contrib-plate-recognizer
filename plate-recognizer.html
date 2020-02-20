@@ -19,7 +19,7 @@
             inputField: {value: "payload", required: true, validate: RED.validators.typedInput("inputFieldType")},
             inputFieldType: {value: "msg"},
             outputField: {value: "payload", required: true, validate: RED.validators.typedInput("outputFieldType")},
-            outputFieldType: {value: "msg"}
+            outputFieldType: {value: "msg"},
             url: {value:"https://api.platerecognizer.com/v1/plate-reader/", required: true}
         },
         credentials: {
@@ -62,7 +62,7 @@
     </div>
     <div class="form-row">
         <label for="node-input-apiToken"><i class="fa fa-key"></i> API token</label>
-        <input type="text" id="node-input-apiToken" placeholder="Enter your token">
+        <input type="password" id="node-input-apiToken" placeholder="Enter your token">
     </div>
     <div class="form-row">
         <label for="node-input-url"><i class="fa fa-globe"></i> URL</label>
