@@ -27,6 +27,8 @@
         var node = this;
         
         node.on("input", function(msg) {
+            node.status({fill:"blue",shape:"dot",text:"recognizing"});
+            
             // Get the image specified in the input message
             var image = RED.util.getMessageProperty(msg, node.inputField);
 
@@ -50,6 +52,7 @@
                 // Store the recognition result (in json format) in the specified output message field
                 RED.util.setMessageProperty(msg, node.outputField, resultAsJson, true);
                 node.send(msg);
+                node.status({ });
             })
             .catch((err) => {
                 console.log(err);
