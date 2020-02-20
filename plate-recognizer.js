@@ -22,6 +22,7 @@
         RED.nodes.createNode(this, config);
         this.url = config.url;
         this.inputField = config.inputField;
+        this.outputField = config.outputField;
 
         var node = this;
         
