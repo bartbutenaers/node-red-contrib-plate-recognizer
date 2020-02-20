@@ -1,0 +1,88 @@
+<!--
+  Copyright 2020, Bart Butenaers
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/javascript">
+    RED.nodes.registerType('plate-recognizer',{
+        category: 'image',
+        color: '#E9967A',
+        defaults: {
+            name: {value:""},
+            inputField: {value: "payload", required: true, validate: RED.validators.typedInput("inputFieldType")},
+            inputFieldType: {value: "msg"},
+            outputField: {value: "payload", required: true, validate: RED.validators.typedInput("outputFieldType")},
+            outputFieldType: {value: "msg"}
+            url: {value:"https://api.platerecognizer.com/v1/plate-reader/", required: true}
+        },
+        credentials: {
+            apiToken: {type: "password"}
+        },        
+        inputs:1,
+        outputs:1,
+        icon: "font-awesome/fa-car",
+        label: function() {
+            return this.name || "Plate recognizer";
+        },
+        oneditprepare: function() {
+            $('#node-input-inputField').typedInput({
+                typeField: $("#node-input-inputFieldType"),
+                types: ['msg']
+            });
+            
+            $('#node-input-outputField').typedInput({
+                typeField: $("#node-input-outputField"),
+                types: ['msg']
+            });
+
+            $("#node-input-restoreUrl").on("click", function (e) {
+                $("#node-input-url").val("https://api.platerecognizer.com/v1/plate-reader/");
+            });        
+        }                 
+    });
+</script>
+
+<script type="text/x-red" data-template-name="plate-recognizer">
+    <div class="form-row">
+        <label style="padding-top: 8px" for="node-input-inputField"><i class="fa fa-sign-in"></i> Input field</label>
+        <input type="text" id="node-input-inputField" style="width:70%">
+        <input type="hidden" id="node-input-inputFieldType">
+    </div>
+    <div class="form-row">
+        <label style="padding-top: 8px" for="node-input-outputField"><i class="fa fa-sign-out"></i> Output field</label>
+        <input type="text" id="node-input-outputField" style="width:70%">
+        <input type="hidden" id="node-input-outputField">
+    </div>
+    <div class="form-row">
+        <label for="node-input-apiToken"><i class="fa fa-key"></i> API token</label>
+        <input type="text" id="node-input-apiToken" placeholder="Enter your token">
+    </div>
+    <div class="form-row">
+        <label for="node-input-url"><i class="fa fa-globe"></i> URL</label>
+        <input type="text" id="node-input-url">
+        <button id="node-input-restoreUrl" class="editor-button" title="Restore default URL""><i class="fa fa-undo"></i></button>
+    </div>
+    <br>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="plate-recognizer">
+    <p>A node for recognizing license plates in images.</p>
+    <p><strong>Input field:</strong><br/>
+    The field of the input message which will need to contain the input image.  By default <code>msg.payload</code> will be used.  The image should be a binary Buffer or a base64 encoded string.</p>
+    <p><strong>API token:</strong><br/>
+    Create an account at <a target="_blank" href="https://platerecognizer.com/">platerecognizer.com</a> and enter your private API token here.</p>
+    <p><strong>Output field:</strong><br/>
+    The field of the output message where the recognition result will be stored (in JSON format).  By default <code>msg.payload</code> will be used.</p>
+</script>
+
