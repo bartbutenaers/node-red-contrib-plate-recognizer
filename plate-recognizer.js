@@ -80,6 +80,10 @@
                 res.json().then( function(resultAsJson) {
                     // Store the recognition result (in json format) in the specified output message field
                     RED.util.setMessageProperty(msg, node.outputField, resultAsJson, true);
+                    
+                    // Make sure the status of the response is available in the output message, for error handling
+                    resultAsJson.status = res.status;
+                    resultAsJson.statusText = res.statusText
                         
                     if (res.ok) {
                         // res.status >= 200 && res.status < 300
@@ -120,7 +124,7 @@
                         // An application error happened, i.e. we got result from the service but not an optimistic one...
                         // For example we have hit our monthly maximum number of allowed recognitions.
                         node.send([null, msg]);
-                        node.status({ fill: "red",shape: "dot",text: "error" });
+                        node.status({ fill: "red",shape: "dot",text: resultAsJson.statusText });
                     }
             
                     node.isRecognizing = false;
