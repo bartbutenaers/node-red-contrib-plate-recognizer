@@ -68,6 +68,16 @@
 
 <script type="text/x-red" data-help-name="plate-statistics">
     <p>A node for getting statistics about license plate recognition.</p>
+    <p>It returns the maximum number of recognitions, and the current number of recognitions in the current month.</p>
     <p><strong>Output field:</strong><br/>
     The field of the output message where the plate statistics will be stored (in JSON format).  By default <code>msg.payload</code> will be used.</p>
+    <p><strong>API token:</strong><br/>
+    Create an account at <a target="_blank" href="https://platerecognizer.com/">platerecognizer.com</a> and enter your private API token here.</p>
+    <p><strong>URL:</strong><br/>
+    Specify the URL of the recognition service, to allow different kind of setups:
+    <ul>
+        <li>Use the official cloud service, which will be the default (and most used) option.</li>
+        <li>Use a local installation (based on the SDK).</li>
+        <li>Use a local Docker container.</li>
+    </ul></p>
 </script>
