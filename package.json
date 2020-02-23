@@ -21,7 +21,8 @@
     },
     "node-red"     : {
         "nodes": {
-            "plate-recognizer": "plate-recognizer.js"
+            "plate-recognizer": "plate-recognizer.js",
+            "plate-statistics": "plate-statistics.js"
         }
     }
 }
