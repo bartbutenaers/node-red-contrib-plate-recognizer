@@ -1,0 +1,54 @@
+<!--
+  Copyright 2020, Bart Butenaers
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<script type="text/javascript">
+    RED.nodes.registerType('plate-statistics',{
+        category: 'image',
+        color: '#E9967A',
+        defaults: {
+            name: {value:""},
+            outputField: {value: "payload", required: true, validate: RED.validators.typedInput("outputFieldType")},
+            outputFieldType: {value: "msg"},
+        },    
+        inputs:1,
+        outputs:1,
+        icon: "font-awesome/fa-sort-numeric-asc",
+        label: function() {
+            return this.name || "Plate statistics";
+        },
+        oneditprepare: function() {
+            $('#node-input-outputField').typedInput({
+                typeField: $("#node-input-outputField"),
+                types: ['msg']
+            });
+        }                 
+    });
+</script>
+
+<script type="text/x-red" data-template-name="plate-statistics">
+    <div class="form-row">
+        <label style="padding-top: 8px" for="node-input-outputField"><i class="fa fa-sign-out"></i> Output field</label>
+        <input type="text" id="node-input-outputField" style="width:70%">
+        <input type="hidden" id="node-input-outputField">
+    </div>
+    <br>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="plate-statistics">
+    <p>A node for getting statistics about license plate recognition.</p>
+    <p><strong>Output field:</strong><br/>
+    The field of the output message where the plate statistics will be stored (in JSON format).  By default <code>msg.payload</code> will be used.</p>
+</script>
