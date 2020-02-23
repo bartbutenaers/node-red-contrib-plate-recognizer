@@ -120,3 +120,17 @@ The output message will contain the recognition status (and statusText):
    + 403: Forbidden due to incorrect API token.
    + 413: The payload is too large and exceeds their [upload limits](https://app.platerecognizer.com/upload-limit/).
    + 429: Too many requests have been send in a given amount of time. Upgrade your license for higher number of calls per second.
+
+## Plate statistics
+Since the number of recognitions per month is limited (e.g. 2500 for a free account), it is very useful to determine from time to time how many recognitions are left.  This way you can avoid situations where you are not aware that you have run out of recognitions...
+
+A second node (*"Plate statistics"*) has been provided to get the statistics of your account:
+
+![Statistics flow](https://user-images.githubusercontent.com/14224149/75119790-6cd92d00-5686-11ea-806d-d755b27eb8d6.png)
+
+```
+[{"id":"9b354f46.f081d","type":"plate-statistics","z":"d9a54719.b13a88","name":"","outputField":"payload","outputFieldType":"msg","url":"https://api.platerecognizer.com/v1/statistics/","x":980,"y":480,"wires":[["54063a77.493ae4"]]},{"id":"5653b69.13c4648","type":"inject","z":"d9a54719.b13a88","name":"Get statistics","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":770,"y":480,"wires":[["9b354f46.f081d"]]},{"id":"54063a77.493ae4","type":"debug","z":"d9a54719.b13a88","name":"Plate statistics","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","x":1190,"y":480,"wires":[]}]
+```
+The resulting statistics (in json format) contain the maximum number of statistics, and also the used number of statistics of the current month:
+
+![Statistics output](https://user-images.githubusercontent.com/14224149/75119816-a3af4300-5686-11ea-9a7d-fb9a8292b823.png)
