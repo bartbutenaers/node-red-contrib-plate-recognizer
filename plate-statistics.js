@@ -15,10 +15,11 @@
  **/
  module.exports = function(RED) {
     var settings = RED.settings;
-    const https = require('https');
+    const fetch = require('node-fetch');
 
     function PlateStatisticsNode(config) {
         RED.nodes.createNode(this, config);
+        this.url         = config.url;
         this.outputField = config.outputField;
                 
         var node = this;
@@ -26,27 +27,19 @@
         node.on("input", function(msg) {
             node.status({fill:"blue",shape:"dot",text:"loading"});
             
-            https.get('https://api.platerecognizer.com/v1/statistics/', function(resp) {
-                var data = '';
-
-                // A chunk of data has been received.
-                resp.on('data', function(chunk) {
-                    data += chunk;
-                });
-
-                // The whole response has been received...
-                resp.on('end', function() {
-                    var datatAsJson = JSON.parse(data);
-                    
-                    // Store the recognition result (in json format) in the specified output message field
-                    RED.util.setMessageProperty(msg, node.outputField, datatAsJson, true);
-                    
+            fetch(node.url, {
+                method: 'GET',
+                headers: {
+                    "Authorization": "Token " + node.credentials.apiToken
+                }
+            }).then( function(res) {
+                res.json().then( function(resultAsJson) {
+                    // Store the statistics result (in json format) in the specified output message field
+                    RED.util.setMessageProperty(msg, node.outputField, resultAsJson, true);
                     node.send(msg);
-                });
-            }).on("error", function(err) {
-                node.status({fill:"red", shape:"dot", text:err.message});
-                console.log("Error getting plate statistics: " + err.message);
-            });
+                    node.status({ });
+                })
+            })
         });
 
         node.on("close", function() {
@@ -54,5 +47,9 @@
         });
     }
 
-    RED.nodes.registerType("plate-statistics", PlateStatisticsNode);
+    RED.nodes.registerType("plate-statistics", PlateStatisticsNode, {
+        credentials: {
+            apiToken: {type: "password"}
+        }
+    });
 }
