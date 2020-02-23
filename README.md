@@ -124,7 +124,7 @@ The output message will contain the recognition status (and statusText):
 ## Plate statistics
 Since the number of recognitions per month is limited (e.g. 2500 for a free account), it is very useful to determine from time to time how many recognitions are left.  This way you can avoid situations where you are not aware that you have run out of recognitions...
 
-A second node (*"Plate statistics"*) has been provided to get the statistics of your account:
+A second node (*"Plate statistics"*) has been provided to get the statistics of your account (with *'URL'* and *'API token'* settings identical as described above):
 
 ![Statistics flow](https://user-images.githubusercontent.com/14224149/75119790-6cd92d00-5686-11ea-806d-d755b27eb8d6.png)
 
