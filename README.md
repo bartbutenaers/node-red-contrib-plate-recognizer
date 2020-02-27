@@ -74,6 +74,9 @@ Specify the URL of the recognition service, to allow different kind of setups:
 + Use a *local installation* (based on the SDK).
 + Use a local *Docker container*.
 
+### Camera ID
+Optionally a camera id can be specified, which will be sent to the recognition service.
+
 ### Status text
 Specify how the recognition result needs to be displayed in the node status label:
 + *None:* Show no recognition results.
@@ -84,12 +87,15 @@ Specify how the recognition result needs to be displayed in the node status labe
 ### Ignore images arriving during recognition
 When selected images will automatically be skipped, when the previous image is still being recognized.  When deselected multiple images can be recognized simultaneously.
 
-### Predict vehicle make and model
+### Send Timestamp
+When selected, the current timestamp will be sent in the request to the recognition service.</p>
+
+### Predict vehicle make and model (MMC)
 When selected not only the plate will be recognized, but there will also be a prediction of the vehicle brand and type.  
 
 CAUTION: this is only supported for some paid account types!
 
-### Only allow specific regions
+### Specify one or more regions
 When selected, an array of region codes can be specified (see [supported regions](http://docs.platerecognizer.com/#regions-supported). 
 
 ## Example flow
