@@ -24,7 +24,7 @@
             ignoreDuring: {value: true},
             makeAndModel: {value: false},
             statusText: {value: "count"},
-            cameraid: {value:'', required: false },
+            cameraId: {value:'', required: false },
             regionFilter: {value: false},
             timestamp: {value: false},
             regionList: {value: "[]", validate: function(v) {
@@ -104,9 +104,9 @@
         <button id="node-input-restoreUrl" class="editor-button" title="Restore default URL""><i class="fa fa-undo"></i></button>
     </div>
     <div class="form-row">
-        <label for="node-input-cameraid"><i class="fa fa-globe"></i> Camera ID:</label>
-        <input type="text" id="node-input-cameraid" placeholder="Enter your camera_id">
-        <input type="hidden" id="node-input-node-input-cameraid">
+        <label for="node-input-cameraId"><i class="fa fa-video-camera"></i> Camera ID</label>
+        <input type="text" id="node-input-cameraId" placeholder="Enter your camera id">
+        <input type="hidden" id="node-input-node-input-cameraId">
     </div>
     <div class="form-row">
         <label for="node-input-statusText"><i class="fa fa-font "></i> Status text</label>
@@ -127,11 +127,11 @@
     </div>
     <div class="form-row">
         <input type="checkbox" id="node-input-makeAndModel" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-makeAndModel" style="width:70%;">MMC</label>
+        <label for="node-input-makeAndModel" style="width:70%;">Predict vehicle make and model (MMMC)</label>
     </div>
     <div class="form-row">
         <input type="checkbox" id="node-input-regionFilter" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-regionFilter" style="width:70%;">Regions</label>
+        <label for="node-input-regionFilter" style="width:70%;">Specify one or more regions</label>
     </div>
     <div class="form-row regionList-row">
         <label style="padding-top: 8px" for="node-input-regionList"><i class="fa fa-list-ol"></i> Regions</label>
@@ -161,7 +161,7 @@
         <li>Use a local Docker container.</li>
     </ul></p>
     <p><strong>Camera ID:</strong><br/>
-        Specify the camera id, to send to the recognition service.
+    Optionally specify the camera id, to send it to the recognition service.
     </p>
     <p><strong>Status text:</strong><br/>
     Specify how the recognition result needs to be displayed in the node status label:
@@ -174,13 +174,9 @@
     <p><strong>Ignore images arriving during recognition:</strong><br/>
     When selected images will automatically be skipped, when the previous image is still being recognized.  When deselected multiple images can be recognized simultaneously.</p>
     <p><strong>Send Timestamp:</strong><br/>
-        When selected current timestamp is sent in the request.
-    </p>
-    
-    
-    <p><strong>MMC:</strong><br/>
+    When selected, the current timestamp is sent in the request.</p>
+    <p><strong>Predict vehicle make and model (MMMC):</strong><br/>
     When selected not only the plate will be recognized, but there will also be a prediction of the vehicle brand and type.  CAUTION: this is only supported for some paid account types!</p>   
     <p><strong>Only allow specific regions:</strong><br/>
-    When selected, an array of region codes can be specified (see <a target="_blank" href="http://docs.platerecognizer.com/#regions-supported">supported regions</a>).
-example:<code> ["fr","gb"] </code> </p>   
+    When selected, an array of region codes can be specified (see <a target="_blank" href="http://docs.platerecognizer.com/#regions-supported">supported regions</a>).  For example:<code>["fr","gb"]</code></p>   
 </script>
