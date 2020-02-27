@@ -24,7 +24,9 @@
             ignoreDuring: {value: true},
             makeAndModel: {value: false},
             statusText: {value: "count"},
+            cameraid: {value:'', required: false },
             regionFilter: {value: false},
+            timestamp: {value: false},
             regionList: {value: "[]", validate: function(v) {
                 // The region list only needs to be specified when the region filter is checked
                 var regionFilter = $('#node-input-regionFilter').prop('checked');
@@ -51,6 +53,7 @@
                 typeField: $("#node-input-inputFieldType"),
                 types: ['msg']
             });
+
             
             $('#node-input-outputField').typedInput({
                 typeField: $("#node-input-outputField"),
@@ -101,6 +104,11 @@
         <button id="node-input-restoreUrl" class="editor-button" title="Restore default URL""><i class="fa fa-undo"></i></button>
     </div>
     <div class="form-row">
+        <label for="node-input-cameraid"><i class="fa fa-globe"></i> Camera ID:</label>
+        <input type="text" id="node-input-cameraid" placeholder="Enter your camera_id">
+        <input type="hidden" id="node-input-node-input-cameraid">
+    </div>
+    <div class="form-row">
         <label for="node-input-statusText"><i class="fa fa-font "></i> Status text</label>
         <select id="node-input-statusText">
             <option value="none">None</option> 
@@ -114,12 +122,16 @@
         <label for="node-input-ignoreDuring" style="width:70%;">Ignore images arriving during recognition</label>
     </div>
     <div class="form-row">
+        <input type="checkbox" id="node-input-timestamp" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-timestamp" style="width:70%;">Send timestamp</label>
+    </div>
+    <div class="form-row">
         <input type="checkbox" id="node-input-makeAndModel" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-makeAndModel" style="width:70%;">Predict vehicle make and model (paid option!)</label>
+        <label for="node-input-makeAndModel" style="width:70%;">MMC</label>
     </div>
     <div class="form-row">
         <input type="checkbox" id="node-input-regionFilter" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-regionFilter" style="width:70%;">Only allow specific regions</label>
+        <label for="node-input-regionFilter" style="width:70%;">Regions</label>
     </div>
     <div class="form-row regionList-row">
         <label style="padding-top: 8px" for="node-input-regionList"><i class="fa fa-list-ol"></i> Regions</label>
@@ -148,6 +160,9 @@
         <li>Use a local installation (based on the SDK).</li>
         <li>Use a local Docker container.</li>
     </ul></p>
+    <p><strong>Camera ID:</strong><br/>
+        Specify the camera id, to send to the recognition service.
+    </p>
     <p><strong>Status text:</strong><br/>
     Specify how the recognition result needs to be displayed in the node status label:
     <ul>
@@ -158,8 +173,14 @@
     </ul></p>
     <p><strong>Ignore images arriving during recognition:</strong><br/>
     When selected images will automatically be skipped, when the previous image is still being recognized.  When deselected multiple images can be recognized simultaneously.</p>
-    <p><strong>Predict vehicle make and model:</strong><br/>
+    <p><strong>Send Timestamp:</strong><br/>
+        When selected current timestamp is sent in the request.
+    </p>
+    
+    
+    <p><strong>MMC:</strong><br/>
     When selected not only the plate will be recognized, but there will also be a prediction of the vehicle brand and type.  CAUTION: this is only supported for some paid account types!</p>   
     <p><strong>Only allow specific regions:</strong><br/>
-    When selected, an array of region codes can be specified (see <a target="_blank" href="http://docs.platerecognizer.com/#regions-supported">supported regions</a>).</p>   
+    When selected, an array of region codes can be specified (see <a target="_blank" href="http://docs.platerecognizer.com/#regions-supported">supported regions</a>).
+example:<code> ["fr","gb"] </code> </p>   
 </script>

@@ -29,6 +29,8 @@
         this.statusText      = config.statusText;
         this.regionListValue = null;
         this.isRecognizing   = false;
+        this.cameraid        = config.cameraid
+        this.timestamp       = config.timestamp
                 
         var node = this;
         
@@ -60,9 +62,20 @@
             }
             
             var body = new FormData();
+           
             body.append('upload', image);
             body.append('mmc', node.makeAndModel.toString());
-            
+
+
+            if (node.cameraid != null){
+            body.append('camera_id', node.cameraid.toString());
+            }
+            if (node.timestamp) {
+                var d = new Date();
+                var s = d.toISOString();
+                body.append('timestamp', s);
+            }
+
             if (node.regionFilter && node.regionListValue) {
                 for (var i = 0; i < node.regionListValue.length; i++) {
                     body.append('regions', node.regionListValue[i]);
