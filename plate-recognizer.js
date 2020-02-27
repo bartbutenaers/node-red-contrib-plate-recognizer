@@ -27,10 +27,10 @@
         this.makeAndModel    = config.makeAndModel;
         this.regionFilter    = config.regionFilter;
         this.statusText      = config.statusText;
+        this.cameraId        = config.cameraId
+        this.timestamp       = config.timestamp
         this.regionListValue = null;
         this.isRecognizing   = false;
-        this.cameraid        = config.cameraid
-        this.timestamp       = config.timestamp
                 
         var node = this;
         
@@ -66,10 +66,10 @@
             body.append('upload', image);
             body.append('mmc', node.makeAndModel.toString());
 
-
-            if (node.cameraid != null){
-            body.append('camera_id', node.cameraid.toString());
+            if (node.cameraId != null){
+            body.append('camera_id', node.cameraId.toString());
             }
+
             if (node.timestamp) {
                 var d = new Date();
                 var s = d.toISOString();
