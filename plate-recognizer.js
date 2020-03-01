@@ -88,16 +88,16 @@
                 },
                 body: body
             }).then( function(res) {
-                res.json().then( function(resultAsJson) {
-                    // Store the recognition result (in json format) in the specified output message field
-                    RED.util.setMessageProperty(msg, node.outputField, resultAsJson, true);
-                    
-                    // Make sure the status of the response is available in the output message, for error handling
-                    resultAsJson.status = res.status;
-                    resultAsJson.statusText = res.statusText
+                if (res.ok) { // res.status >= 200 && res.status < 300
+                    // Convert the response to a JSON object
+                    res.json().then( function(resultAsJson) {
+                        // Store the recognition result (in json format) in the specified output message field
+                        RED.util.setMessageProperty(msg, node.outputField, resultAsJson, true);
                         
-                    if (res.ok) {
-                        // res.status >= 200 && res.status < 300
+                        // Make sure the status of the response is available in the output message, for error handling
+                        resultAsJson.status = res.status;
+                        resultAsJson.statusText = res.statusText
+                            
 
                         node.send([msg, null]);
                         
@@ -130,22 +130,29 @@
                                 node.status({ fill: "blue",shape: "dot",text: platesAndScores });
                                 break;
                         }
-                    }
-                    else {
-                        // An application error happened, i.e. we got result from the service but not an optimistic one...
-                        // For example we have hit our monthly maximum number of allowed recognitions.
+                    }).catch( function(error) {
+                        // Failed to parse the json
                         node.send([null, msg]);
-                        node.status({ fill: "red",shape: "dot",text: resultAsJson.statusText });
-                    }
+                        node.status({ fill: "red",shape: "dot",text: "JSON parse failed" });
+                    })
+                }
+                else {
+                    // An application error happened, i.e. we got result from the service but not an optimistic one...
+                    // For example we have hit our monthly maximum number of allowed recognitions.
+                    // Or when the number of license plates is too high, we get an internal server error (so we even cannot parse the json)
+                    node.send([null, msg]);
+                    node.status({ fill: "red",shape: "dot",text: res.statusText });
+                }
             
-                    node.isRecognizing = false;
-                })
+                node.isRecognizing = false;
             })
             .catch( function(err) {
                 // A real failure happened, i.e. we even weren't able to get a result from the service...
                 node.isRecognizing = false;
                 node.error("License plate recognition failed: " + err);
                 node.status({fill:"red",shape:"dot",text:"failed"});
+                
+                node.isRecognizing = false;
             });
         });
 
