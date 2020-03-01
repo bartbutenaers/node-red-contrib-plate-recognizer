@@ -87,9 +87,6 @@ Specify how the recognition result needs to be displayed in the node status labe
 ### Ignore images arriving during recognition
 When selected images will automatically be skipped, when the previous image is still being recognized.  When deselected multiple images can be recognized simultaneously.
 
-### Send Timestamp
-When selected, the current timestamp will be sent in the request to the recognition service.</p>
-
 ### Predict vehicle make and model (MMC)
 When selected not only the plate will be recognized, but there will also be a prediction of the vehicle brand and type.  
 
