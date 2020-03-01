@@ -26,7 +26,6 @@
             statusText: {value: "count"},
             cameraId: {value:'', required: false },
             regionFilter: {value: false},
-            timestamp: {value: false},
             regionList: {value: "[]", validate: function(v) {
                 // The region list only needs to be specified when the region filter is checked
                 var regionFilter = $('#node-input-regionFilter').prop('checked');
@@ -122,10 +121,6 @@
         <label for="node-input-ignoreDuring" style="width:70%;">Ignore images arriving during recognition</label>
     </div>
     <div class="form-row">
-        <input type="checkbox" id="node-input-timestamp" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-timestamp" style="width:70%;">Send timestamp</label>
-    </div>
-    <div class="form-row">
         <input type="checkbox" id="node-input-makeAndModel" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-makeAndModel" style="width:70%;">Predict vehicle make and model (MMMC)</label>
     </div>
@@ -173,8 +168,6 @@
     </ul></p>
     <p><strong>Ignore images arriving during recognition:</strong><br/>
     When selected images will automatically be skipped, when the previous image is still being recognized.  When deselected multiple images can be recognized simultaneously.</p>
-    <p><strong>Send Timestamp:</strong><br/>
-    When selected, the current timestamp is sent in the request.</p>
     <p><strong>Predict vehicle make and model (MMMC):</strong><br/>
     When selected not only the plate will be recognized, but there will also be a prediction of the vehicle brand and type.  CAUTION: this is only supported for some paid account types!</p>   
     <p><strong>Only allow specific regions:</strong><br/>
