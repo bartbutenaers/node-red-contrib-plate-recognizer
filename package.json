@@ -1,6 +1,6 @@
 {
     "name"         : "node-red-contrib-plate-recognizer",
-    "version"      : "1.0.1",
+    "version"      : "1.0.2",
     "description"  : "A Node Red node for recognising licence plates via platerecognizer.com",
     "dependencies": {
       "node-fetch": "2.6.0",
@@ -9,15 +9,21 @@
     "author": {
         "name": "Bart Butenaers"
     },
+    "contributors": [
+        {
+            "name": "Nemanja Vukmirovic",
+            "url": "https://github.com/vukmirovic98"
+        }
+    ],
     "license": "Apache-2.0",
     "keywords": [ "node-red", "license", "plate", "recognize", "recognition", "car", "alpr" ],
     "bugs": {
-        "url": "https://github.com/bartbutenaers/node-red-contrib-license-plate/issues"
+        "url": "https://github.com/bartbutenaers/node-red-contrib-plate-recognizer/issues"
     },
-    "homepage": "https://github.com/bartbutenaers/node-red-contrib-license-plate",
+    "homepage": "https://github.com/bartbutenaers/node-red-contrib-plate-recognizer",
     "repository": {
         "type": "git",
-        "url": "https://github.com/bartbutenaers/node-red-contrib-license-plate.git"
+        "url": "https://github.com/bartbutenaers/node-red-contrib-plate-recognizer.git"
     },
     "node-red"     : {
         "nodes": {
