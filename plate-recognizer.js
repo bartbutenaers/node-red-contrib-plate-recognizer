@@ -27,8 +27,7 @@
         this.makeAndModel    = config.makeAndModel;
         this.regionFilter    = config.regionFilter;
         this.statusText      = config.statusText;
-        this.cameraId        = config.cameraId
-        this.timestamp       = config.timestamp
+        this.cameraId        = config.cameraId;
         this.regionListValue = null;
         this.isRecognizing   = false;
                 
@@ -70,11 +69,10 @@
             body.append('camera_id', node.cameraId.toString());
             }
 
-            if (node.timestamp) {
-                var d = new Date();
-                var s = d.toISOString();
-                body.append('timestamp', s);
-            }
+            // Always send the current timestamp to the service
+            var d = new Date();
+            var s = d.toISOString();
+            body.append('timestamp', s);
 
             if (node.regionFilter && node.regionListValue) {
                 for (var i = 0; i < node.regionListValue.length; i++) {
