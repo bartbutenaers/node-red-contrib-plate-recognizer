@@ -25,6 +25,7 @@
             makeAndModel: {value: false},
             statusText: {value: "count"},
             cameraId: {value:'', required: false },
+            separateMsg: {value: false },
             regionFilter: {value: false},
             regionList: {value: "[]", validate: function(v) {
                 // The region list only needs to be specified when the region filter is checked
@@ -122,7 +123,11 @@
     </div>
     <div class="form-row">
         <input type="checkbox" id="node-input-makeAndModel" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-makeAndModel" style="width:70%;">Predict vehicle make and model (MMMC)</label>
+        <label for="node-input-makeAndModel" style="width:70%;">Predict vehicle make and model (MMC)</label>
+    </div>
+    <div class="form-row">
+        <input type="checkbox" id="node-input-separateMsg" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-separateMsg" style="width:70%;">Send separate message for each plate</label>
     </div>
     <div class="form-row">
         <input type="checkbox" id="node-input-regionFilter" style="display: inline-block; width: auto; vertical-align: top;">
@@ -168,8 +173,10 @@
     </ul></p>
     <p><strong>Ignore images arriving during recognition:</strong><br/>
     When selected images will automatically be skipped, when the previous image is still being recognized.  When deselected multiple images can be recognized simultaneously.</p>
-    <p><strong>Predict vehicle make and model (MMMC):</strong><br/>
+    <p><strong>Predict vehicle make and model (MMC):</strong><br/>
     When selected not only the plate will be recognized, but there will also be a prediction of the vehicle brand and type.  CAUTION: this is only supported for some paid account types!</p>   
+    <p><strong>Send separate message for each plate:</strong><br/>
+    When selected a separate output message will be send for each recognized license plate.  If not selected a single output message will be send containing an array of ALL recognized license plates.</p>   
     <p><strong>Only allow specific regions:</strong><br/>
     When selected, an array of region codes can be specified (see <a target="_blank" href="http://docs.platerecognizer.com/#regions-supported">supported regions</a>).  For example:<code>["fr","gb"]</code></p>   
 </script>
