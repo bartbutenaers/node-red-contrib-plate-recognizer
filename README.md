@@ -1,5 +1,5 @@
 # node-red-contrib-plate-recognizer
-A Node-RED node for license plate recognizing via platerecognizer.com
+A Node-RED node for license plate recognizing via [platerecognizer.com](https://app.platerecognizer.com/)
 
 ## Install
 Run the following npm command in your Node-RED user directory (typically ~/.node-red):
@@ -11,7 +11,7 @@ Note that you need to ***signup*** for an account on [platerecognizer.com](https
 ## Node usage
 This node will detect and recognise license plates in an image, using a deep learning (cloud) service.  The AI (cloud) service has been trained for license plates for more than 100 countries.  They also offer an [SDK](http://docs.platerecognizer.com/#sdk) for local setups, which can easily be installed as a Docker container.  See also our [blog](https://platerecognizer.com/blog/anpr-on-node-red/) for an introduction.
 
-:warning: When you have an image with an ***incorrect recognition*** result, don't hesitate to contact the people of platerecognizer.com!  They offer great support.  When you provide them the image, they will analyse it and try to solve the problem.  This way the system can become better and better ...
+:warning: When you have an image with an ***incorrect recognition*** result, don't hesitate to contact the people of [platerecognizer.com](https://app.platerecognizer.com/)!  They offer great support.  When you provide them the image, they will analyse it and try to solve the problem.  This way the system can become better and better ...
 
 Send an image (as buffer or base64 encoded string) via an input message, to start a recognition:
 
@@ -94,6 +94,9 @@ When selected not only the plate will be recognized, but there will also be a pr
 
 CAUTION: this is only supported for some paid account types!
 
+### Send separate message for each plate:
+When selected a separate output message will be send for each recognized license plate.  If not selected a single output message will be send containing an array of ALL recognized license plates.  See the section *"Split output messages"* below for more information.
+
 ### Specify one or more regions
 When selected, an array of region codes can be specified (see [supported regions](http://docs.platerecognizer.com/#regions-supported). 
 
@@ -139,3 +142,36 @@ A second node (*"Plate statistics"*) has been provided to get the statistics of 
 The resulting statistics (in json format) contain the maximum number of statistics, and also the used number of statistics of the current month:
 
 ![Statistics output](https://user-images.githubusercontent.com/14224149/75119816-a3af4300-5686-11ea-9a7d-fb9a8292b823.png)
+
+## Split output messages
+When the input message contains multiple license plates, then the output message will contain an ***array*** of license plates.  Since not all Node-RED nodes can handle arrays as input, it might be required to split the array into separate items.  In other words the single output message (containing an array of N license plates) need to be split into N separate output messages (each one containing a single license plate).
+
+CAUTION: to avoid conflicts, the original input message will be ***cloned*** N times.  But since the output message also contains the input image, that input image will also be cloned N times.  As a result extra system resources (CPU and memory) will be used!
+
+### Using a Split node
+The Split node is a Node-RED core node that can be used to split a single message into multiple messages:
+
+![Split node flow](https://user-images.githubusercontent.com/14224149/77010195-9f1a3980-6969-11ea-99e8-112c4b3ea351.png)
+
+```
+[{"id":"ef944a38.bbef38","type":"plate-recognizer","z":"c8a948fc.76ade8","name":"","inputField":"payload","inputFieldType":"msg","outputField":"payload","outputFieldType":"msg","url":"https://api.platerecognizer.com/v1/plate-reader/","ignoreDuring":true,"makeAndModel":false,"statusText":"count","cameraId":"","regionFilter":false,"regionList":"[]","regionListType":"json","x":780,"y":500,"wires":[["78a775a2.7e37cc","60071b7.6a1cae4"],[]]},{"id":"2e44447f.4e42dc","type":"split","z":"c8a948fc.76ade8","name":"Split array","splt":"\\n","spltType":"str","arraySplt":1,"arraySpltType":"len","stream":false,"addname":"","x":1220,"y":500,"wires":[["745a5d4a.ff4e34"]]},{"id":"5a39a5a9.55c97c","type":"http request","z":"c8a948fc.76ade8","name":"Get video stream","method":"GET","ret":"bin","paytoqs":false,"url":"http://www.piepenbroek.nl/foto2010/baltisch/IMG_1499.JPG","tls":"","persist":false,"proxy":"","authType":"","x":570,"y":500,"wires":[["ef944a38.bbef38","dad27e21.9ab27"]]},{"id":"dad27e21.9ab27","type":"image","z":"c8a948fc.76ade8","name":"","width":"400","data":"payload","dataType":"msg","thumbnail":false,"active":true,"x":780,"y":580,"wires":[]},{"id":"745a5d4a.ff4e34","type":"debug","z":"c8a948fc.76ade8","name":"Show messages","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","x":1380,"y":500,"wires":[]},{"id":"15ee9680.b977ea","type":"inject","z":"c8a948fc.76ade8","name":"Start the test","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"onceDelay":0.1,"x":370,"y":500,"wires":[["5a39a5a9.55c97c"]]},{"id":"78a775a2.7e37cc","type":"change","z":"c8a948fc.76ade8","name":"payload = payload.results","rules":[{"t":"set","p":"payload","pt":"msg","to":"payload.results","tot":"msg"}],"action":"","property":"","from":"","to":"","reg":false,"x":1010,"y":500,"wires":[["2e44447f.4e42dc"]]},{"id":"60071b7.6a1cae4","type":"debug","z":"c8a948fc.76ade8","name":"Show messages","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","x":980,"y":440,"wires":[]}]
+```
+The flow explained step by step:
+
+1.	Start the flow by pressing the button on the Inject-node
+2.	The second node gets an image (e.g. via a http request from an ip camera)
+3.	In the image-preview node you can see that the image contains two license plates
+4.	The plate recognizer node detects two plates
+5.	Via a debug node you can see the json output: it is a single message containing an array of two license plates. 
+6.	I move the payloads.result field to the payload field (because the next node expects the array in the payload field).
+7.	The split node splits the array in the payload, which means the single message will be splitted in two separate messages.
+8.	With a debug node you will see that we now have two separate messages, each one containing a single license plate (which can now be handled easily by other nodes in the flow...).
+
+### Using the build-in splitter
+Since the Split node will cause our flow to become a bit more complex, this node offers a build-in split functionality.  When the *"Send separate message for each plate"* checkbox is activated, an input image (containing N license plates) will result in N output messages (each one containing a single license plate).
+
+Edge case: when the input message contains *NO* license plate, then a single output message will be sent containing an *empty* result:
+
+![Empty result](https://user-images.githubusercontent.com/14224149/77010828-da693800-696a-11ea-8e64-637e9661ab8a.png)
+
+Remark: in the latter case, we could have decided to send no output message (since no license plate has been detected).  But when somebody sends a picture to the input, he will expect something back ...
