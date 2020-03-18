@@ -25,6 +25,7 @@
         this.outputField     = config.outputField;
         this.ignoreDuring    = config.ignoreDuring;
         this.makeAndModel    = config.makeAndModel;
+        this.separateMsg     = config.separateMsg;
         this.regionFilter    = config.regionFilter;
         this.statusText      = config.statusText;
         this.cameraId        = config.cameraId;
@@ -91,16 +92,14 @@
                 if (res.ok) { // res.status >= 200 && res.status < 300
                     // Convert the response to a JSON object
                     res.json().then( function(resultAsJson) {
-                        // Store the recognition result (in json format) in the specified output message field
-                        RED.util.setMessageProperty(msg, node.outputField, resultAsJson, true);
-                        
                         // Make sure the status of the response is available in the output message, for error handling
                         resultAsJson.status = res.status;
                         resultAsJson.statusText = res.statusText
-                            
-
-                        node.send([msg, null]);
                         
+                        // Store the recognition result (in json format) in the specified output message field
+                        RED.util.setMessageProperty(msg, node.outputField, resultAsJson, true);
+                        
+                        // Show the required node status
                         switch (node.statusText) {
                             case "none":
                                 node.status({ });
@@ -123,12 +122,47 @@
                                 var platesAndScores = "";
                                 
                                 for (var i = 0; i < resultAsJson.results.length; i++) {
+                                    var result = resultAsJson.results[i];
+                                    var score = Math.round(result.score * 10) / 10;
                                     if (i > 0) platesAndScores = platesAndScores + ",";
-                                    platesAndScores = platesAndScores + resultAsJson.results[i].plate.toUpperCase() + "(" + resultAsJson.results[i].score * 100 + "%)";
+                                    platesAndScores = platesAndScores + result.plate.toUpperCase() + "(" + score * 100 + "%)";
                                 }
                                 
                                 node.status({ fill: "blue",shape: "dot",text: platesAndScores });
                                 break;
+                        }
+                        
+                        // Check whether the plates need to be send as separate output messages
+                        if (node.separateMsg) {
+                            var plateCount = resultAsJson.results.length;
+                            
+                            if (plateCount === 0) {
+                                // When no plate found, replace the empty array by an empty element
+                                resultAsJson.results = {};
+                                
+                                // A single output message containing NO plate
+                                node.send([msg, null]);
+                            }
+                            else {
+                                // All plates (except the first one) will be send as clones
+                                for (var i = 1; i < plateCount; i++) {
+                                    var clonedMsg = RED.util.cloneMessage(msg);
+                                    
+                                    var clonedResultAsJson = RED.util.getMessageProperty(clonedMsg, node.outputField);
+                                    clonedResultAsJson.results = clonedResultAsJson.results[i];
+
+                                    // A single output message containing the n-th plate
+                                    node.send([clonedMsg, null]);
+                                }
+                                
+                                // For performance the first plate will be send uncloned (i.e. the original msg)
+                                resultAsJson.results = resultAsJson.results[0];
+                                node.send([msg, null]);
+                            }
+                        }
+                        else {
+                            // A single output message containing an array with ALL recognized plates
+                            node.send([msg, null]);
                         }
                     }).catch( function(error) {
                         // Failed to parse the json
