@@ -8,6 +8,12 @@ npm install node-red-contrib-plate-recognizer
 ```
 Note that you need to ***signup*** for an account on [platerecognizer.com](https://app.platerecognizer.com/start/), and paste your private token into this node's config screen.  With a free account there is a limit to recognize 2500 images per month, but they also offer various paid license models.
 
+## Support my Node-RED developments
+
+Please buy my wife a coffee to keep her happy, while I am busy developing Node-RED stuff for you ...
+
+<a href="https://www.buymeacoffee.com/bartbutenaers" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy my wife a coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+
 ## Node usage
 This node will detect and recognise license plates in an image, using a deep learning (cloud) service.  The AI (cloud) service has been trained for license plates for more than 100 countries.  They also offer an [SDK](http://docs.platerecognizer.com/#sdk) for local setups, which can easily be installed as a Docker container.  See also our [blog](https://platerecognizer.com/blog/anpr-on-node-red/) for an introduction.
 
