@@ -3,7 +3,7 @@
     "version"      : "1.0.3",
     "description"  : "A Node Red node for recognising licence plates via platerecognizer.com",
     "dependencies": {
-      "node-fetch": "2.6.0",
+      "node-fetch": "2.6.1",
       "form-data": "3.0.0"
     },
     "author": {
